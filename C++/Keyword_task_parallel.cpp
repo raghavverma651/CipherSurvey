@@ -10,9 +10,11 @@ using namespace std:: chrono;
 
 
 
+unordered_map<char,char> map_en;
 
+unordered_map<char,char> map_1;
 
-unordered_map<char,char> inverse_map(unordered_map<char,char> &map)
+/*unordered_map<char,char> inverse_map(unordered_map<char,char> &map)
 {
     unordered_map<char,char> inv;
     for_each(map.begin(), map.end(),
@@ -21,9 +23,22 @@ unordered_map<char,char> inverse_map(unordered_map<char,char> &map)
                     inv.insert(make_pair(p.second, p.first));
                 });
     return inv;
+}*/
+
+void decryption(string &str, string &input, int si, int ei){
+
+
+
+    string decrypt;
+    for(int i=si;i<=ei;i++){
+        decrypt+=map_1[input[i]];
+    }
+
+    str = decrypt;
+
 }
 
-void decryption(string &str, string &input, unordered_map<char,char>& map_1, int si, int ei){
+string decryption(string &input){
 
 
 
@@ -32,22 +47,36 @@ void decryption(string &str, string &input, unordered_map<char,char>& map_1, int
         decrypt+=map_1[input[i]];
     }
 
-    str = decrypt;
+    return decrypt;
 
 }
 
-void encryption(string &str, string &input, unordered_map<char,char> &map, int si, int ei){
+void encryption(string &str, string &input, int si, int ei){
 
     string encrypt;
 
-    for(int i=si;i<ei;i++){
-        encrypt+=map[input[i]];
+    for(int i=si;i<=ei;i++){
+        encrypt+=map_en[input[i]];
     }
 
     //return encrypt;
     str = encrypt;
 
 }
+
+string encryption(string &input){
+
+    string encrypt;
+
+    for(int i=0;i<input.size();i++){
+        encrypt+=map_en[input[i]];
+    }
+
+    return encrypt;
+    // str = encrypt;
+
+}
+
 
 void removeSpecialCharacter(string &s)
 {
@@ -77,7 +106,7 @@ string removeDuplicates(string s){
   return output;
 }
 
-void task_1(vector<string> &for_encrypt, vector<string> &subsample, int si, int ei, unordered_map<char,char> &map){
+void task_1(vector<string> &for_encrypt, vector<string> &subsample, int si, int ei){
     #pragma omp parallel for num_threads(MAX)
     //int iterat=si;
     //while(iterat<ei){
@@ -97,22 +126,22 @@ void task_1(vector<string> &for_encrypt, vector<string> &subsample, int si, int 
 
         //int number = input.size();
 
-        int num_threads = 2;
-        int steps = subsample.at(iterat).size()/num_threads+1;
-        vector<thread> threads;
-        vector<string> output(num_threads);
+        // int num_threads = 2;
+        // int steps = subsample.at(iterat).size()/num_threads+1;
+        // vector<thread> threads;
+        // vector<string> output(num_threads);
 
-        for(int i=0;i<num_threads;i++){
-            threads.push_back(thread(encryption,ref(output[i]),ref(subsample.at(iterat)),ref(map),i*steps,(i+1)*steps));
-        }
+        // for(int i=0;i<num_threads;i++){
+        //     threads.push_back(thread(encryption,ref(output[i]),ref(subsample.at(iterat)),i*steps,(i+1)*steps));
+        // }
 
 
-        for (thread &t : threads) {
-            if (t.joinable()) {
-                t.join();
-            }
+        // for (thread &t : threads) {
+        //     if (t.joinable()) {
+        //         t.join();
+        //     }
 
-        }
+        // }
 
 
 
@@ -122,8 +151,8 @@ void task_1(vector<string> &for_encrypt, vector<string> &subsample, int si, int 
         //cout<<output[0]+output[1]+output[2]+output[3]+output[4]+output[5]+output[6]+output[7]+output[8];
         //cout<<output[0]+output[1]<<endl;
 
-        string str = output[0]+output[1];
-        for_encrypt.push_back(str);
+        //string str = output[0]+output[1];
+        for_encrypt.push_back(encryption(subsample.at(iterat)));
         //iterat++;
 
 
@@ -132,7 +161,7 @@ void task_1(vector<string> &for_encrypt, vector<string> &subsample, int si, int 
 }
 
 
-void task_2(vector<string> &for_decrypt, vector<string> &subsample, int si, int ei, unordered_map<char,char> &map){
+void task_2(vector<string> &for_decrypt, vector<string> &subsample, int si, int ei){
 
     //int iterat=si;
     //while(iterat<ei){
@@ -142,15 +171,15 @@ void task_2(vector<string> &for_decrypt, vector<string> &subsample, int si, int 
         transform(subsample.at(iterat).begin(), subsample.at(iterat).end(), subsample.at(iterat).begin(), ::tolower);
 
 
-        vector<string> output(2);
+        // vector<string> output(2);
 
-        thread t5(encryption,ref(output[0]),ref(subsample.at(iterat)),ref(map),0,subsample.at(iterat).size()/2);
-        thread t6(encryption,ref(output[1]),ref(subsample.at(iterat)),ref(map),subsample.at(iterat).size()/2,subsample.at(iterat).size());
+        // thread t5(encryption,ref(output[0]),ref(subsample.at(iterat)),0,subsample.at(iterat).size()/2);
+        // thread t6(encryption,ref(output[1]),ref(subsample.at(iterat)),subsample.at(iterat).size()/2,subsample.at(iterat).size());
 
 
 
-        t5.join();
-        t6.join();
+        // t5.join();
+        // t6.join();
 
         //int number = input.size();
 
@@ -179,8 +208,9 @@ void task_2(vector<string> &for_decrypt, vector<string> &subsample, int si, int 
         //cout<<output[0]+output[1]+output[2]+output[3]+output[4]+output[5]+output[6]+output[7]+output[8];
         //cout<<output[0]+output[1]<<endl;
 
-        string str1 = output[0]+output[1];
-        for_decrypt.push_back(str1);
+        
+        //string str1 = output[0]+output[1];
+        for_decrypt.push_back(decryption(subsample.at(iterat)));
         //iterat++;
 
 
@@ -190,7 +220,7 @@ void task_2(vector<string> &for_decrypt, vector<string> &subsample, int si, int 
 
 void init_code(){
     fast_io;
-    #ifndef Project_Repo
+    #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
     #endif 
@@ -226,15 +256,15 @@ int main(){
 
         subsample.push_back(s1.at(i));
 
-        i+=;
+        i+=1;
     }
 
     cout<<subsample.size()<<" Words \n";  //Around 240 words
     //cout<<"Dictionary Words : "<<endl;
-    cout<<endl;
-    /*for(int i=0;i<subsample.size()/2;i++){
-        cout<<subsample.at(i)<<"                        "<<subsample.at(i+subsample.size()/2)<<endl;
-    }*/
+    // cout<<endl;
+    // for(int i=0;i<subsample.size()/2;i++){
+    //     cout<<subsample.at(i)<<"                        "<<subsample.at(i+subsample.size()/2)<<endl;
+    // }
     const auto processor_count = thread::hardware_concurrency();
     unsigned int n = thread::hardware_concurrency();
     cout << n << " concurrent threads are supported.\n";
@@ -250,11 +280,12 @@ int main(){
     clock_t time_req;
     time_req=clock();
 
+    auto start = high_resolution_clock::now();
     key = removeDuplicates(key);
     removeSpecialCharacter(key);
     transform(key.begin(), key.end(), key.begin(), ::tolower);
 
-    auto start = high_resolution_clock::now();
+    
     unordered_map<char,char> map;
 
     string string_difference;
@@ -275,7 +306,12 @@ int main(){
     for(int i=0;i<all_char.size();i++){
         map[all_char[i]]=final_key_used[i];
     }
-    unordered_map<char, char> inverted = inverse_map(map);
+
+    for(int i=0;i<all_char.size();i++){
+        map_1[final_key_used[i]]=all_char[i];
+    }
+
+    //unordered_map<char, char> inverted = inverse_map(map);
 
     //cout<<final_key_used<<endl;
 
@@ -287,8 +323,8 @@ int main(){
 
 
 
-    thread t1(task_1,ref(for_encrypt),ref(subsample), 0, subsample.size()/2,ref(map));
-    thread t2(task_2,ref(for_decrypt),ref(subsample),subsample.size()/2,subsample.size(),ref(inverted));
+    thread t1(task_1,ref(for_encrypt),ref(subsample), 0, subsample.size()/2);
+    thread t2(task_2,ref(for_decrypt),ref(subsample),subsample.size()/2,subsample.size());
 
     t1.join();
     t2.join();
@@ -308,8 +344,8 @@ int main(){
 
 
     auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<seconds>(stop-start);
-    cout<<"\nTime taken: "<<duration.count()<<" s "<<endl;
+    auto duration = duration_cast<milliseconds>(stop-start);
+    cout<<"\nTime taken: "<<duration.count()<<" milis "<<endl;
 
 
 

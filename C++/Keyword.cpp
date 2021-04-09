@@ -1,13 +1,7 @@
 #include<bits/stdc++.h>
-// #include<string.h>
-// #include<vector>
-// #include<unordered_map>
-#define fast_io ios_base::sync_with_stdio(false);cin.tie(NULL)
-#include<pthread.h>
-#include<thread>
 using namespace std;
 using namespace std:: chrono;
-
+#define fast_io ios_base::sync_with_stdio(false);cin.tie(NULL)
 unordered_map<char,char> map_1;
 unordered_map<char,char> map_2;
 
@@ -22,33 +16,30 @@ unordered_map<char,char> map_2;
     return inv;
 }*/
 
-void decryption(string &str, string &input, int si, int ei){
+string decryption(string input){
 
-
+    //unordered_map<char, char> inverted = inverse_map(map);
 
     string decrypt;
-    for(int i=si;i<ei;i++){
+    for(int i=0;i<input.size();i++){
         decrypt+=map_2[input[i]];
     }
 
-    str = decrypt;
+    return decrypt;
 
 }
 
-void encryption(string &str, string &input, int si, int ei){
+string ecryption(string input){
 
     string encrypt;
 
-    for(int i=si;i<ei;i++){
+    for(int i=0;i<input.size();i++){
         encrypt+=map_1[input[i]];
     }
-    
 
-    //return encrypt;
-    str = encrypt;
+    return encrypt;
 
 }
-
 
 void removeSpecialCharacter(string &s)
 {
@@ -78,37 +69,29 @@ string removeDuplicates(string s){
   return output;
 }
 
-
 void init_code(){
     fast_io;
-    #ifndef Project_Repo
+    #ifndef ONLINE_JUDGE
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
     #endif 
 }
 
+
 int main(){
 
-    init_code();
-
-    const auto processor_count = thread::hardware_concurrency();
-    unsigned int n = thread::hardware_concurrency();
-    cout << n << " concurrent threads are supported.\n";
-    //cout<<processor_count<<endl;
+	init_code();
 
     string input;
     string key;
     cout<<"Enter the message : "<<endl;
-    //getline(cin,input);
-    cin>>input;
+    getline(cin,input);
     cout<<"Enter the Key : "<<endl;
-    //getline(cin,key);
-    cin>>key;
-    /*cout<<input<<endl;
-    return 0;*/
+    getline(cin,key);
     clock_t time_req;
     time_req=clock();
     auto start = high_resolution_clock::now();
+
     removeSpecialCharacter(input);
     transform(input.begin(), input.end(), input.begin(), ::tolower);
     cout<<input<<endl;
@@ -117,8 +100,7 @@ int main(){
     key = removeDuplicates(key);
     removeSpecialCharacter(key);
     transform(key.begin(), key.end(), key.begin(), ::tolower);
-    //cout<<key<<endl;
-
+    cout<<key<<endl;
 
     
     string string_difference;
@@ -132,81 +114,36 @@ int main(){
     //cout << "In string1 but not string2: " << string_difference << std::endl;
 
     string final_key_used = key+string_difference;
-    
-
-
+    //cout<<final_key_used<<endl;
+    //cout<<all_char<<endl;
     for(int i=0;i<all_char.size();i++){
         map_1[all_char[i]]=final_key_used[i];
     }
 
     for(int i=0;i<all_char.size();i++){
-        map_2[final_key_used[i]]=all_char[i];
+    	map_2[final_key_used[i]]=all_char[i];
     }
 
-    // cout<<final_key_used<<endl;
-    // cout<<all_char<<endl;
-
-
-    // thread t1(encryption,ref(s1),ref(input),0,input.size()/2);
-    // thread t2(encryption,ref(s2),ref(input),input.size()/2,input.size());
 
 
 
-    // t1.join();
-    // t2.join();
-
-
-
-
-
-    int num_threads = 2;
-    int steps = input.size()/num_threads;
-    vector<thread> threads;
-    vector<string> output(num_threads);
-
-    for(int i=0;i<num_threads;i++){
-        threads.push_back(thread(encryption,ref(output[i]),ref(input),i*steps,(i+1)*steps));
-    }
-    for (std::thread &t : threads) {
-        if (t.joinable()) {
-        t.join();
-        }
-    }
-    // for(int i=0;i<output.size();i++){
-    //     cout<<output[i];
-    // }
-    cout<<output[0]+output[1];
-    //cout<<output[0]+output[1]+output[2]+output[3]+output[4]+output[5]+output[6]+output[7]+output[8];
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop-start);
-    cout<<"\nTime taken: "<<duration.count()<<" us"<<endl;
-
-    time_req = clock() - time_req;
-    cout << "\nMultithreading " << (float)time_req/CLOCKS_PER_SEC << " seconds\n";
-
-
-    /*string encrypted = ecryption(input,map);
+    string encrypted = ecryption(input);
 
     cout<<"Encypted Text : "<<encrypted<<endl;
 
-
-    string decrypted = decryption(encrypted,map);
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop-start);
+    cout<<"\nTime taken: "<<duration.count()<<" us"<<endl;
+    string decrypted = decryption(encrypted);
 
     cout<<"Decrypted Text : "<<decrypted<<endl;
 
+
+
     time_req = clock() - time_req;
     cout << "Linear " << (float)time_req/CLOCKS_PER_SEC << " seconds" << endl;
-
-
     /*time_req = clock() - time_req;
     cout << "Linear " << (float)time_req/CLOCKS_PER_SEC << " seconds" << endl;*/
 
-    return 0;
-
-    
-
 
 }
-
-
-
