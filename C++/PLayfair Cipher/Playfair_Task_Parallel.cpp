@@ -215,7 +215,7 @@ void task_2(vector<string> &subsample, int si, int ei){
     #pragma omp parallel for 
     for(int j = si;j<ei;j++){
             // string decypher;
-            string pln_txt_1 =  subsample.at(j/2);
+            string pln_txt_1 =  subsample.at(3);
             // transform(pln_txt_1.begin(), pln_txt_1.end(), pln_txt_1.begin(), ::tolower);
             // replcae_j(pln_txt_1);
             
