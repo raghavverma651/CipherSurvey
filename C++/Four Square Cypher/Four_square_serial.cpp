@@ -21,9 +21,7 @@ using std::ifstream; using std::ofstream;
 using std::ostringstream;
 using namespace std:: chrono;
 
-/*
-Four-Square Cipher for Text File Encryption/Decryption
-*/
+
 
 string block1,block2;
 
@@ -216,9 +214,9 @@ int main() {
     for(int i=0;i<time.size();i++){
         cout<<time.at(i)<<" "<<size_n.at(i)<<"\n";
     }
-    // ofstream outFile("sizeVariation_time_Scratch.txt");
-    // for(int i=0;i<time.size();++i){
-    //     outFile<<time[i]<<" "<<size_n[i]<<endl;
-    // }
+    ofstream outFile("sizeVariation_time_Scratch.txt");
+    for(int i=0;i<time.size();++i){
+        outFile<<time[i]<<" "<<size_n[i]<<endl;
+    }
 
 }

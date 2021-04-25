@@ -21,9 +21,6 @@ using std::ifstream; using std::ofstream;
 using std::ostringstream;
 using namespace std:: chrono;
 
-/*
-Four-Square Cipher for Text File Encryption/Decryption
-*/
 
 string block1,block2;
 
@@ -191,60 +188,49 @@ int main() {
 
     }
 
-    	        string keyword1 = "german";
+
+	vector<int>time;
+    vector<int>size_n;
+    int i=353;
+    while(i>=1){
+        auto start = high_resolution_clock::now();
+        string keyword1 = "german";
 		string keyword2 = "monarchy";
 		
 		block1 = create_encoding(keyword1);
 		block2 = create_encoding(keyword2);
+        vector<string> s1;
+        int interal_splitting = 0;
+        while(interal_splitting<full_dataset.size()){
+            s1.push_back(full_dataset.at(interal_splitting));
+            interal_splitting+=i;
+        }
 
-		cout<<block1<<"\n";
-		cout<<block2;
+        thread t1(task_1,ref(s1), 0, s1.size()/2);
+        thread t2(task_2,ref(s1),s1.size()/2,s1.size());
 
-	
-	
-
-	// vector<int>time;
- //    vector<int>size_n;
- //    int i=353;
- //    while(i>=1){
- //        auto start = high_resolution_clock::now();
- //        string keyword1 = "german";
-	// 	string keyword2 = "monarchy";
-		
-	// 	block1 = create_encoding(keyword1);
-	// 	block2 = create_encoding(keyword2);
- //        vector<string> s1;
- //        int interal_splitting = 0;
- //        while(interal_splitting<full_dataset.size()){
- //            s1.push_back(full_dataset.at(interal_splitting));
- //            interal_splitting+=i;
- //        }
-
- //        thread t1(task_1,ref(s1), 0, s1.size()/2);
- //        thread t2(task_2,ref(s1),s1.size()/2,s1.size());
-
- //        t1.join();
- //        t2.join();
+        t1.join();
+        t2.join();
         
 
 
- //        auto stop = high_resolution_clock::now();
- //        auto duration = duration_cast<milliseconds>(stop-start);
- //        //cout<<"\nTime taken: "<<duration.count()<<" ms"<<endl;
- //        time.push_back(duration.count());
- //        size_n.push_back(s1.size());
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<milliseconds>(stop-start);
+        //cout<<"\nTime taken: "<<duration.count()<<" ms"<<endl;
+        time.push_back(duration.count());
+        size_n.push_back(s1.size());
       
- //        i/=2;
+        i/=2;
 
- //    }
+    }
 
- //    for(int i=0;i<time.size();i++){
- //        cout<<time.at(i)<<" "<<size_n.at(i)<<"\n";
- //    }
-    // ofstream outFile("Task_parallel_sizeVariation_time.txt");
-    // for(int i=0;i<time.size();++i){
-    //     outFile<<time[i]<<" "<<size_n[i]<<endl;
-    // }
+    for(int i=0;i<time.size();i++){
+        cout<<time.at(i)<<" "<<size_n.at(i)<<"\n";
+    }
+    ofstream outFile("Task_parallel_sizeVariation_time.txt");
+    for(int i=0;i<time.size();++i){
+        outFile<<time[i]<<" "<<size_n[i]<<endl;
+    }
 
 
 
