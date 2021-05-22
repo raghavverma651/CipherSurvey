@@ -4,11 +4,11 @@
 **PROBLEM STATEMENT**
 Achieving optimal performance of Cryptographic algorithms is Imperative!
 We are demonstrating how to accelerate performance by studying cryptography under parallel models of computation.
-We have examined various approaches to parallelize ciphers in the languages of C++, a nearly bare-metal language, and Python which is a versatile language to understand.
+We have examined various approaches to parallelize ciphers in the languages of C++, a nearly bare-metal language, and Python which is a versatile language to understand.  
 
 
 **KEYWORD CIPHER** 
-A keyword cipher is a form of monoalphabetic substitution. A keyword is used as the key, and it determines the letter matchings of the cipher alphabet to the plain alphabet. Repeats of letters in the word are removed, then the cipher alphabet is generated with the keyword matching to A, B, C etc. until the keyword is used up, whereupon the rest of the ciphertext letters are used in alphabetical order, excluding those already used in the key.
+A keyword cipher is a form of monoalphabetic substitution. A keyword is used as the key, and it determines the letter matchings of the cipher alphabet to the plain alphabet. Repeats of letters in the word are removed, then the cipher alphabet is generated with the keyword matching to A, B, C etc. until the keyword is used up, whereupon the rest of the ciphertext letters are used in alphabetical order, excluding those already used in the key.  
 *Encryption*
 First line of input contains keyword which you wish to enter. Second line of input contains the string which you have to encrypt.
 Plaintext : A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
